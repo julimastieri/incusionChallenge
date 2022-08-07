@@ -1,0 +1,15 @@
+.healthy{
+    background: #2c6e49;
+}
+
+.healthy:nth-child(even) {
+    background-color: #163724;
+  }
+
+.error{
+    background: #a11d33;
+}
+
+.error:nth-child(even) {
+    background-color: #88182b;
+  }
