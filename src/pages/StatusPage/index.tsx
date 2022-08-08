@@ -9,20 +9,23 @@ function StatusPage() {
   const [intervalTime, setIntervalTime] = useState<number>(0);
 
   useEffect(() => {
-    const statusPromises: Promise<HealthStatus>[] = apiNames.map(
-      (apiName, index) =>
-        fetch(`/${apiName}/health/status`)
-          .then((res) =>
-            res.status < 400
-              ? res.json()
-              : { success: false, message: `Unhealthy: ${res.status}` }
-          )
-          .then((data) => {
-            return { ...data, name: apiNames[index] };
-          })
-    );
-
     const fetchInterval = setInterval(() => {
+      const statusPromises: Promise<HealthStatus>[] = apiNames.map(
+        (apiName, index) =>
+          fetch(`https://api.factoryfour.com/${apiName}/health/status`)
+            .then((res) => res.json())
+            .then((data) => {
+              return { ...data, name: apiNames[index] };
+            })
+            .catch(() => {
+              return {
+                success: false,
+                message: `Unhealthy`,
+                name: apiNames[index],
+              };
+            })
+      );
+
       Promise.all(statusPromises).then((allResponses) =>
         setHealthStatuses(allResponses)
       );
