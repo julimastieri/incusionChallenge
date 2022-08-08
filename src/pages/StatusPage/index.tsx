@@ -11,7 +11,7 @@ function StatusPage() {
   useEffect(() => {
     const statusPromises: Promise<HealthStatus>[] = apiNames.map(
       (apiName, index) =>
-        fetch(`https://api.factoryfour.com/${apiName}/health/status`)
+        fetch(`/${apiName}/health/status`)
           .then((res) =>
             res.status < 400
               ? res.json()
